@@ -115,7 +115,9 @@ const UserButton = async () => {
           <form
             action={async () => {
               'use server';
-              await signOut();
+              await signOut({
+                redirectTo: '/login',
+              });
             }}
           >
             <button type='submit' className='w-full text-left'>
