@@ -33,7 +33,7 @@ export default function RootLayout({
               <Header />
               <main className='py-10'>{children}</main>
             </div>
-            <Toaster />
+            <Toaster richColors />
           </TooltipProvider>
         </ThemeProvider>
       </body>
