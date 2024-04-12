@@ -8,9 +8,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [GitHub],
   session: {
-    strategy:'jwt'
+    strategy: 'jwt',
   },
-  pages:{
+  pages: {
     signIn: '/login',
-  }
+  },
+  callbacks: {
+    authorized: ({ auth }) => {
+      return !!auth;
+    },
+  },
 });
