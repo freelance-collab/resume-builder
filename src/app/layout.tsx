@@ -2,8 +2,10 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 import { Header } from '@/components/header';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/theme-provider';
 
@@ -26,8 +28,13 @@ export default function RootLayout({
     <html lang='en'>
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-          <Header />
-          {children}
+          <TooltipProvider>
+            <div vaul-drawer-wrapper='' className='bg-background'>
+              <Header />
+              <main className='py-10'>{children}</main>
+            </div>
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
