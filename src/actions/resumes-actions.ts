@@ -1,12 +1,13 @@
 'use server';
 
 import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 import prisma from '@/lib/prisma';
 
 import { asyncAuthHandler } from './utils';
 
-export const getUserResumes = asyncAuthHandler((userId, args: Omit<Prisma.ResumeFindManyArgs, 'where'>) => {
+export const getUserResumesAction = asyncAuthHandler((userId, args: Omit<Prisma.ResumeFindManyArgs, 'where'>) => {
   return prisma.resume.findMany({
     ...args,
     where: {
@@ -33,12 +34,16 @@ export const createResumeAction = asyncAuthHandler(async (userId, data: CreateRe
     throw new Error('A resume with this name already exists');
   }
 
-  return prisma.resume.create({
+  const resume = await prisma.resume.create({
     data: {
       userId,
       ...data,
     },
   });
+
+  revalidatePath('/');
+
+  return resume;
 });
 
 // export const nativeCreateResume = async (data: CreateResumeData) => {

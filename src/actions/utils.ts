@@ -1,9 +1,12 @@
 import { checkAuth } from './auth-actions';
 
-export interface ActionRes<T> {
-  data?: T;
-  error?: string;
-}
+export type ActionRes<T> =
+  | {
+      data: T;
+    }
+  | {
+      error: string;
+    };
 
 type AsyncFunction<TResponse, TArgs> = (args: TArgs) => Promise<TResponse>;
 
@@ -29,7 +32,8 @@ export function asyncAuthHandler<TResponse, TArgs>(
 export function promisifyAction<TResponse, TArgs>(action: AsyncFunction<ActionRes<TResponse>, TArgs>) {
   return async function (args: TArgs) {
     const data = await action(args);
-    if (data.error) {
+
+    if ('error' in data) {
       throw new Error(data.error);
     }
 
