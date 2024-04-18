@@ -29,7 +29,7 @@ export function asyncAuthHandler<TResponse, TArgs>(
   };
 }
 
-export function promisifyAction<TResponse, TArgs>(action: AsyncFunction<ActionRes<TResponse>, TArgs>) {
+export function callAction<TResponse, TArgs>(action: AsyncFunction<ActionRes<TResponse>, TArgs>) {
   return async function (args: TArgs) {
     const data = await action(args);
 

@@ -2,6 +2,9 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "printWidth": 120,
+  "tailwindFunctions": [
+    "tw"
+  ],
   "plugins": [
     "prettier-plugin-tailwindcss"
   ]

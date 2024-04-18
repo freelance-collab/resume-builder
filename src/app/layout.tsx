@@ -31,7 +31,7 @@ export default function RootLayout({
           <TooltipProvider>
             <div vaul-drawer-wrapper='' className='bg-background'>
               <Header />
-              <main className='py-10'>{children}</main>
+              <main className='py-5'>{children}</main>
             </div>
             <Toaster richColors />
           </TooltipProvider>
