@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+
 export interface Option {
   value: string;
   label: string;
@@ -146,7 +148,7 @@ const CommandEmpty = forwardRef<HTMLDivElement, React.ComponentProps<typeof Comm
 
 CommandEmpty.displayName = 'CommandEmpty';
 
-const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorProps>(
+export const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorProps>(
   (
     {
       value,
@@ -328,87 +330,90 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
     }, [creatable, commandProps?.filter]);
 
     return (
-      <Command
-        {...commandProps}
-        onKeyDown={(e) => {
-          handleKeyDown(e);
-          commandProps?.onKeyDown?.(e);
-        }}
-        className={cn('overflow-visible bg-transparent', commandProps?.className)}
-        shouldFilter={commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch} // When onSearch is provided, we don't want to filter the options. You can still override it.
-        filter={commandFilter()}
-      >
-        <div
-          className={cn(
-            'group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-            className,
-          )}
+      <Popover open={open} onOpenChange={setOpen}>
+        <Command
+          {...commandProps}
+          onKeyDown={(e) => {
+            handleKeyDown(e);
+            commandProps?.onKeyDown?.(e);
+          }}
+          className={cn('overflow-visible bg-transparent', commandProps?.className)}
+          shouldFilter={commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch} // When onSearch is provided, we don't want to filter the options. You can still override it.
+          filter={commandFilter()}
         >
-          <div className='flex flex-wrap gap-1'>
-            {selected.map((option) => {
-              return (
-                <Badge
-                  key={option.value}
-                  className={cn(
-                    'data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground',
-                    'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground',
-                    badgeClassName,
-                  )}
-                  data-fixed={option.fixed}
-                  data-disabled={disabled}
-                >
-                  {option.label}
-                  <button
-                    className={cn(
-                      'ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                      (disabled || option.fixed) && 'hidden',
-                    )}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        handleUnselect(option);
-                      }
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    onClick={() => handleUnselect(option)}
-                  >
-                    <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
-                  </button>
-                </Badge>
-              );
-            })}
-            {/* Avoid having the "Search" Icon */}
-            <CommandPrimitive.Input
-              {...inputProps}
-              ref={inputRef}
-              value={inputValue}
-              disabled={disabled}
-              onValueChange={(value) => {
-                setInputValue(value);
-                inputProps?.onValueChange?.(value);
-              }}
-              onBlur={(event) => {
-                setOpen(false);
-                inputProps?.onBlur?.(event);
-              }}
-              onFocus={(event) => {
-                setOpen(true);
-                triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
-                inputProps?.onFocus?.(event);
-              }}
-              placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? '' : placeholder}
+          <PopoverTrigger asChild>
+            <div
+              onClick={(e) => e.preventDefault()}
               className={cn(
-                'ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground',
-                inputProps?.className,
+                'group w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+                className,
               )}
-            />
-          </div>
-        </div>
-        <div className='relative mt-2'>
-          {open && (
-            <CommandList className='absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+            >
+              <div className='flex flex-wrap gap-1'>
+                {selected.map((option) => {
+                  return (
+                    <Badge
+                      key={option.value}
+                      className={cn(
+                        'animate-jump data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground',
+                        'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground',
+                        badgeClassName,
+                      )}
+                      data-fixed={option.fixed}
+                      data-disabled={disabled}
+                    >
+                      {option.label}
+                      <button
+                        className={cn(
+                          'ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                          (disabled || option.fixed) && 'hidden',
+                        )}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleUnselect(option);
+                          }
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onClick={() => handleUnselect(option)}
+                      >
+                        <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+                      </button>
+                    </Badge>
+                  );
+                })}
+                {/* Avoid having the "Search" Icon */}
+                <CommandPrimitive.Input
+                  {...inputProps}
+                  ref={inputRef}
+                  value={inputValue}
+                  disabled={disabled}
+                  onValueChange={(value) => {
+                    setInputValue(value);
+                    inputProps?.onValueChange?.(value);
+                  }}
+                  onBlur={(event) => {
+                    setOpen(false);
+                    inputProps?.onBlur?.(event);
+                  }}
+                  onFocus={(event) => {
+                    setOpen(true);
+                    triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
+                    inputProps?.onFocus?.(event);
+                  }}
+                  placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? '' : placeholder}
+                  className={cn(
+                    'ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground',
+                    inputProps?.className,
+                  )}
+                />
+              </div>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className='popover-content-width p-0' onOpenAutoFocus={(e) => e.preventDefault()}>
+            <CommandList>
               {isLoading ? (
                 <>{loadingIndicator}</>
               ) : (
@@ -451,12 +456,11 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                 </>
               )}
             </CommandList>
-          )}
-        </div>
-      </Command>
+          </PopoverContent>
+        </Command>
+      </Popover>
     );
   },
 );
 
 MultipleSelector.displayName = 'MultipleSelector';
-export default MultipleSelector;
