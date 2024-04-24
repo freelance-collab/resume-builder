@@ -1,14 +1,13 @@
-import { MinusIcon, PlusIcon } from 'lucide-react';
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { type ResumeSchemaType } from '../resumes-templates/schema';
-import { Button } from '../ui/button';
 import { FloatingLabelInput } from '../ui/floating-label-input';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { PhoneInput } from '../ui/phone-input';
 import { CountryDropdown } from './country-input';
+import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 import { StateDropdown } from './state-input';
 
 export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) => {
@@ -113,7 +112,7 @@ export const LinksForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) =
     <div className='space-y-4'>
       <FormLabel className='block'>Links</FormLabel>
       {linkFields.map((field, index) => (
-        <div key={field.id} className='animate-fade flex gap-8'>
+        <div key={field.id} className='flex animate-fade gap-8'>
           <FormField
             control={form.control}
             name={`personalInformation.links.${index}.title`}
@@ -138,23 +137,11 @@ export const LinksForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) =
               </FormItem>
             )}
           />
-
-          <Button
-            type='button'
-            variant='destructive'
-            className='h-8 w-8 flex-shrink-0'
-            size='icon'
-            onClick={() => removeLink(index)}
-          >
-            <MinusIcon className='h-4 w-4' />
-          </Button>
+          <RemoveFieldButton onClick={() => removeLink(index)} />
         </div>
       ))}
-      <Button
-        type='button'
-        variant='outline'
-        className='h-8 w-8 rounded-full'
-        size='icon'
+
+      <AddFieldButton
         onClick={async () => {
           const res = await form.trigger('personalInformation.links');
 
@@ -167,9 +154,7 @@ export const LinksForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) =
             toast.error('Please fill previous fields');
           }
         }}
-      >
-        <PlusIcon className='h-4 w-4' />
-      </Button>
+      />
     </div>
   );
 };
