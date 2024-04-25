@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { ResumeSchemaType } from '../resumes-templates/schema';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
+import { MonthPicker } from '../ui/month-picker';
 import { Textarea } from '../ui/textarea';
 import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 
@@ -59,7 +60,7 @@ export const ExperienceForm = ({ form }: { form: UseFormReturn<ResumeSchemaType>
                   <FormItem className='flex-1'>
                     <FormLabel>Start Date</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <MonthPicker currentMonth={field.value} onMonthChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -73,7 +74,7 @@ export const ExperienceForm = ({ form }: { form: UseFormReturn<ResumeSchemaType>
                   <FormItem className='flex-1'>
                     <FormLabel>End Date</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <MonthPicker currentMonth={field.value} onMonthChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -107,8 +108,7 @@ export const ExperienceForm = ({ form }: { form: UseFormReturn<ResumeSchemaType>
             appendExperience({
               jobTitle: '',
               company: '',
-              startDate: '',
-              endDate: '',
+              startDate: new Date(),
               description: '',
             });
           } else {

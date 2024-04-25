@@ -45,8 +45,8 @@ export const resumeSchema = z.object({
     z.object({
       jobTitle: z.string(),
       company: z.string(),
-      startDate: z.string(),
-      endDate: z.string().optional(),
+      startDate: z.date(),
+      endDate: z.date().optional(),
       description: z.string(),
     }),
   ),
@@ -113,7 +113,7 @@ export const data: ResumeSchemaType = {
     {
       jobTitle: 'Front-End Developer',
       company: 'Freelancing',
-      startDate: '01/2024',
+      startDate: undefined,
       description:
         'However, if you arent manually creating the list and instead are just pasting it in from some dynamic data source... you will need to parse the html string so that each ul and li looks like the snippet above (<View style=, etc.)  I had to use this module for parsing my html: react-html-parser And then parse my string like this: ',
     },
