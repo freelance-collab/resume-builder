@@ -412,7 +412,7 @@ export const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSe
               </div>
             </div>
           </PopoverTrigger>
-          <PopoverContent className='popover-content-width p-0' onOpenAutoFocus={(e) => e.preventDefault()}>
+          <PopoverContent className='p-0' onOpenAutoFocus={(e) => e.preventDefault()}>
             <CommandList>
               {isLoading ? (
                 <>{loadingIndicator}</>
