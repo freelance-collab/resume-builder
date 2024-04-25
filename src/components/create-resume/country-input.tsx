@@ -18,8 +18,8 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 interface CountryDropdownProps {
-  country?: { label: string; value: string };
-  setCountry: (value: { label: string; value: string } | undefined) => void;
+  country: { label: string; value: string };
+  setCountry: (value: { label: string; value: string }) => void;
   disabled?: boolean;
 }
 
@@ -32,7 +32,7 @@ export const CountryDropdown = ({ country, setCountry, disabled }: CountryDropdo
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' role='combobox' aria-expanded={open} className='w-full justify-between'>
-          <span>{country?.label ?? 'Select Country...'}</span>
+          <span>{country.label ?? 'Select Country...'}</span>
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
@@ -47,9 +47,7 @@ export const CountryDropdown = ({ country, setCountry, disabled }: CountryDropdo
                   key={c.isoCode}
                   value={c.name}
                   onSelect={() => {
-                    if (c.isoCode === country?.value) {
-                      setCountry(undefined);
-                    } else {
+                    if (!(c.isoCode === country.value)) {
                       setCountry({ label: c.name, value: c.isoCode });
                     }
 
@@ -60,7 +58,7 @@ export const CountryDropdown = ({ country, setCountry, disabled }: CountryDropdo
                     <span>{c.flag}</span>
                     <span>{c.name}</span>
                   </div>
-                  <Check className={cn('mr-2 h-4 w-4', country?.value === c.isoCode ? 'opacity-100' : 'opacity-0')} />
+                  <Check className={cn('mr-2 h-4 w-4', country.value === c.isoCode ? 'opacity-100' : 'opacity-0')} />
                 </CommandItem>
               ))}
               <ScrollBar orientation='vertical' />

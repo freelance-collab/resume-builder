@@ -67,7 +67,14 @@ export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSc
             <FormItem className='flex-1'>
               <FormLabel>Country</FormLabel>
               <FormControl>
-                <CountryDropdown country={field.value} setCountry={field.onChange} />
+                <CountryDropdown
+                  country={field.value}
+                  setCountry={(value) => {
+                    form.resetField('personalInformation.state');
+
+                    field.onChange(value);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

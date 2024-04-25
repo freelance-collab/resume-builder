@@ -14,7 +14,7 @@ export const resumeSchema = z.object({
       label: z.string(),
       value: z.string(),
     }),
-    state: z.string(),
+    state: z.string().optional(),
     address: z.string().optional(),
     links: z.array(
       z.object({
@@ -62,7 +62,6 @@ export const data: ResumeSchemaType = {
       label: 'Egypt',
       value: 'EG',
     },
-    state: 'Cairo',
     phoneNumber: '',
     links: [
       {

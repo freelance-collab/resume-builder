@@ -44,7 +44,7 @@ export const StateDropdown = ({ countryCode, state, setState, disabled }: StateD
         </Button>
       </PopoverTrigger>
       <PopoverContent className='p-0'>
-        <Command>
+        <Command className='h-[300px]'>
           <CommandInput placeholder='Search state...' />
           <CommandEmpty>No state found.</CommandEmpty>
           <CommandGroup>

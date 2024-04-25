@@ -28,7 +28,8 @@ export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
           <p>{data.personalInformation.phoneNumber}</p>
           <p>|</p>
           <p>
-            {data.personalInformation.state}, {data.personalInformation.country.label}
+            {data.personalInformation.state && <>{data.personalInformation.state} ,</>}
+            {data.personalInformation.country.label}
           </p>
         </div>
 

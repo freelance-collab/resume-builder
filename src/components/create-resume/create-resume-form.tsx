@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { Textarea } from '../ui/textarea';
 import { EducationForm } from './education-form';
-import { ExperienceForm } from './experince-form';
+import { ExperienceForm } from './experience-form';
 import { PersonalInformationForm } from './personal-information-form';
 import { SkillsForm } from './skills-form';
 
