@@ -1,68 +1,51 @@
-import { Document, Font, Link, Page, Text, View } from '@react-pdf/renderer';
+import { format } from 'date-fns';
 import { Fragment } from 'react';
-import { createTw } from 'react-pdf-tailwind';
+
+import { cn } from '@/lib/utils';
 
 import { ResumeSchemaType } from './schema';
 
-Font.register({
-  family: 'CM',
-  fonts: [
-    {
-      src: '/fonts/cm.ttf',
-      fontWeight: 400,
-    },
-    {
-      src: '/fonts/cm2.ttf',
-      fontWeight: 700,
-    },
-  ],
-});
+export const FONT_SIZE = {
+  sm: 'text-[0.425rem]',
+  base: 'text-[0.650rem]',
+  lg: 'text-[0.725rem]',
+  xl: 'text-[0.85rem]',
+  '2xl': 'text-[1.225rem]',
+};
 
-const tw = createTw({
-  theme: {
-    fontFamily: {
-      sans: ['CM'],
-    },
-    fontSize: {
-      sm: '0.625rem',
-      base: '0.875rem',
-      lg: '1rem',
-      xl: '1.125rem',
-      '2xl': '1.5rem',
-    },
-  },
-});
-
-export const FAANGDocument = ({ data }: { data: ResumeSchemaType }) => (
-  <Document>
-    <Page size='A4' style={tw('p-12 font-sans text-base')}>
+export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
+  return (
+    <div className={cn('font-cm p-8', FONT_SIZE.base)}>
       {/* Heading */}
-      <View style={tw('items-center justify-center text-center')}>
-        <Text style={tw('mb-1 text-2xl font-bold uppercase tracking-wider')}>{data.personalInformation.name}</Text>
-        <Text style={tw('mb-1 text-lg font-bold uppercase tracking-wide')}>{data.personalInformation.jobTitle}</Text>
-        <View style={tw('mb-1 flex-row gap-2')}>
-          <Text>{data.personalInformation.phoneNumber}</Text>
-          <Text>|</Text>
-          <Text>
-            <>
-              {data.personalInformation.state}, {data.personalInformation.country}
-            </>
-          </Text>
-        </View>
-        <View style={tw('mb-7 flex-row gap-2')}>
+      <div className='flex flex-col items-center justify-center text-center'>
+        <h1 className={cn('mb-1 font-bold uppercase tracking-wider', FONT_SIZE['2xl'])}>
+          {data.personalInformation.name}
+        </h1>
+        <p className={cn('mb-1 font-bold uppercase tracking-wide', FONT_SIZE.lg)}>
+          {data.personalInformation.jobTitle}
+        </p>
+        <div className={'mb-1 flex flex-row gap-2'}>
+          <p>{data.personalInformation.phoneNumber}</p>
+          <p>|</p>
+          <p>
+            {data.personalInformation.state}, {data.personalInformation.country.label}
+          </p>
+        </div>
+
+        <div className={'mb-7 flex flex-row gap-2'}>
           {data.personalInformation.links.map((link, i) => (
             <Fragment key={link.title}>
-              <Link href={link.href} style={tw('no-underline')}>
+              <a href={link.href} className={'text-blue-600 no-underline'}>
                 {link.title}
-              </Link>
-              {i !== data.personalInformation.links.length - 1 && <Text>|</Text>}
+              </a>
+              {i !== data.personalInformation.links.length - 1 && <p>|</p>}
             </Fragment>
           ))}
-        </View>
-      </View>
+        </div>
+      </div>
 
       <Section title='objective'>
-        <Text>{data.objective}</Text>
+        <p>{data.objective}</p>
       </Section>
 
       <Section title='education'>
@@ -82,56 +65,61 @@ export const FAANGDocument = ({ data }: { data: ResumeSchemaType }) => (
           <ExperienceItem key={i} experience={experience} />
         ))}
       </Section>
-    </Page>
-  </Document>
-);
+    </div>
+  );
+};
 
 const ExperienceItem = ({ experience }: { experience: ResumeSchemaType['experiences'][number] }) => {
   return (
-    <View>
-      <View style={tw('flex-row items-start justify-between')}>
-        <View style={tw('gap-0.5')}>
-          <Text style={tw('font-bold')}>{experience.jobTitle}</Text>
-          <Text>{experience.company}</Text>
-        </View>
-        <Text>
-          {experience.startDate} - {experience.endDate ?? 'Present'}
-        </Text>
-      </View>
-      <View style={tw('mt-2')}>
-        <Text>{experience.description}</Text>
-      </View>
-    </View>
+    <div>
+      <div className={cn('flex flex-row items-start justify-between')}>
+        <div className={cn('gap-0.5')}>
+          <p className={cn('font-bold')}>{experience.jobTitle}</p>
+          <p>{experience.company}</p>
+        </div>
+        <p>
+          <>
+            {`${format(experience.startDate, 'LLLL')}, ${experience.startDate.getFullYear()}`} -{' '}
+            {experience.endDate
+              ? `${format(experience.endDate, 'LLLL')}, ${experience.endDate.getFullYear()}`
+              : 'Present'}
+          </>
+        </p>
+      </div>
+      <div className={cn('mt-2')}>
+        <p>{experience.description}</p>
+      </div>
+    </div>
   );
 };
 
 const SkillItem = ({ skill }: { skill: ResumeSchemaType['skills'][number] }) => {
   return (
-    <View style={tw('flex-row')}>
-      <Text style={tw('mb-0.5 w-44 font-bold')}>{skill.category}</Text>
-      <Text>{skill.skills.join(', ')}</Text>
-    </View>
+    <div className={cn('flex flex-row')}>
+      <p className={cn('mb-0.5 w-44 font-bold')}>{skill.category}</p>
+      <p>{skill.skills.join(', ')}</p>
+    </div>
   );
 };
 
 const EducationItem = ({ education }: { education: ResumeSchemaType['educations'][number] }) => (
-  <View>
-    <View style={tw('flex-row items-center justify-between')}>
-      <View style={tw('flex-row items-center')}>
-        <Text style={tw('mb-0.5 font-bold')}>{education.major}</Text>
-        <Text>, {education.university}</Text>
-      </View>
-      <Text>
+  <div>
+    <div className={cn('flex flex-row items-center justify-between')}>
+      <div className={cn('flex flex-row items-center')}>
+        <p className={cn('mb-0.5 font-bold')}>{education.major}</p>
+        <p>, {education.university}</p>
+      </div>
+      <p>
         {education.startYear}-{education.endYear ?? 'Present'}
-      </Text>
-    </View>
-    {education.grade && <Text>{education.grade}</Text>}
-  </View>
+      </p>
+    </div>
+    {education.grade && <p>{education.grade}</p>}
+  </div>
 );
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <View style={tw('mb-8')}>
-    <Text style={tw('mb-1.5 border-b text-lg font-bold uppercase')}>{title}</Text>
+  <div className={'mb-8'}>
+    <p className={cn('mb-1.5 border-b font-bold uppercase', FONT_SIZE.lg)}>{title}</p>
     {children}
-  </View>
+  </div>
 );

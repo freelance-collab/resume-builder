@@ -2,7 +2,7 @@
 
 import { PDFViewer } from '@react-pdf/renderer';
 
-import { FAANGDocument } from '@/components/resumes-templates/FAANG';
+import { FAANGDocument } from '@/components/resumes-templates/FAANG.pdf';
 import { data } from '@/components/resumes-templates/schema';
 
 const ResumePage = () => {

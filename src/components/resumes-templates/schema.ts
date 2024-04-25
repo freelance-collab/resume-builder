@@ -113,7 +113,7 @@ export const data: ResumeSchemaType = {
     {
       jobTitle: 'Front-End Developer',
       company: 'Freelancing',
-      startDate: undefined,
+      startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       description:
         'However, if you arent manually creating the list and instead are just pasting it in from some dynamic data source... you will need to parse the html string so that each ul and li looks like the snippet above (<View style=, etc.)  I had to use this module for parsing my html: react-html-parser And then parse my string like this: ',
     },

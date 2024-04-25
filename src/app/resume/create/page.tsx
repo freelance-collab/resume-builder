@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { CreateResumeForm } from '@/components/create-resume/create-resume-form';
-// import { ResumePreview } from '@/components/create-resume/resume-preview';
+import { ResumePreview } from '@/components/create-resume/resume-preview';
 import { data, resumeSchema, ResumeSchemaType } from '@/components/resumes-templates/schema';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
@@ -17,7 +17,7 @@ export default function ResumePage() {
     defaultValues: data,
     mode: 'onChange',
   });
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState(true);
 
   return (
     <div className='px-10'>
@@ -34,7 +34,9 @@ export default function ResumePage() {
         {preview && (
           <>
             <ResizableHandle withHandle className='mx-10' />
-            <ResizablePanel>{/* <ResumePreview data={form.getValues()} /> */}</ResizablePanel>
+            <ResizablePanel className='flex justify-center'>
+              <ResumePreview data={form.getValues()} />
+            </ResizablePanel>
           </>
         )}
       </ResizablePanelGroup>
