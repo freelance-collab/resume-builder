@@ -88,7 +88,7 @@ export const ExperienceForm = ({ form }: { form: UseFormReturn<ResumeSchemaType>
                   <FormItem className='col-span-2 flex-1'>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea {...field} className='h-[100px]' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

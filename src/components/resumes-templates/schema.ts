@@ -90,7 +90,6 @@ export const data: ResumeSchemaType = {
       major: 'Bachelor of Computers and Systems Engineering',
       university: 'Zagazig University',
       startYear: '2017',
-      endYear: '2022',
       grade: 'Very Good 82%',
     },
   ],

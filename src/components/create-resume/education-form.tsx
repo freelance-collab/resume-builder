@@ -88,8 +88,8 @@ export const EducationForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> 
                   <FormItem className='flex-1'>
                     <FormLabel>End Year</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger>
+                      <Select onValueChange={field.onChange} value={field.value} key={field.value}>
+                        <SelectTrigger allowClear onClear={() => field.onChange(undefined)} value={field.value}>
                           <SelectValue placeholder='Select end year' />
                         </SelectTrigger>
                         <SelectContent>
