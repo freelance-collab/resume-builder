@@ -70,6 +70,7 @@ const config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        cm: ['var(--font-cm)', ...fontFamily.sans],
       },
       gridTemplateColumns: {
         '4auto': 'repeat(auto-fit, minmax(250px, 1fr))',

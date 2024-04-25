@@ -2,6 +2,7 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
+import localFont from 'next/font/local';
 import { Toaster } from 'sonner';
 
 import { Header } from '@/components/header';
@@ -19,6 +20,20 @@ const fontSans = FontSans({
   variable: '--font-sans',
 });
 
+const fontCM = localFont({
+  variable: '--font-cm',
+  src: [
+    {
+      path: '../../public/fonts/cm.ttf',
+      weight: '400',
+    },
+    {
+      path: '../../public/fonts/cm2.ttf',
+      weight: '700',
+    },
+  ],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable, fontCM.variable)}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <TooltipProvider>
             <div vaul-drawer-wrapper='' className='bg-background'>
