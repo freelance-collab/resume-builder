@@ -41,12 +41,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable, fontCM.variable)}>
+      <body className={cn('bg-background font-sans antialiased', fontSans.variable, fontCM.variable)}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <TooltipProvider>
-            <div vaul-drawer-wrapper='' className='bg-background'>
+            <div vaul-drawer-wrapper='' className='flex min-h-screen flex-col bg-background'>
               <Header />
-              <main className='py-5'>{children}</main>
+              <main className='flex flex-grow flex-col py-5'>{children}</main>
             </div>
             <Toaster richColors />
           </TooltipProvider>

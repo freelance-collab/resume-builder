@@ -16,6 +16,15 @@ export const getUserResumesAction = asyncAuthHandler((userId, args: Omit<Prisma.
   });
 });
 
+export const getResumeByIdAction = asyncAuthHandler((userId, id: string) => {
+  return prisma.resume.findUnique({
+    where: {
+      id,
+      userId,
+    },
+  });
+});
+
 interface CreateResumeData {
   name: string;
   description?: string;
@@ -34,16 +43,12 @@ export const createResumeAction = asyncAuthHandler(async (userId, data: CreateRe
     throw new Error('A resume with this name already exists');
   }
 
-  const resume = await prisma.resume.create({
+  return prisma.resume.create({
     data: {
       userId,
       ...data,
     },
   });
-
-  revalidatePath('/');
-
-  return resume;
 });
 
 // export const nativeCreateResume = async (data: CreateResumeData) => {

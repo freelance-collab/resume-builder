@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -18,6 +19,7 @@ const formSchema = z.object({
 });
 
 export const CreateResumeForm = ({ onSubmit }: { onSubmit: () => void }) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -27,7 +29,10 @@ export const CreateResumeForm = ({ onSubmit }: { onSubmit: () => void }) => {
 
     toast.promise(createResume(values), {
       loading: 'Creating resume...',
-      success: 'Resume created successfully',
+      success: (data) => {
+        router.push(`/builder/${data.id}`);
+        return 'Resume created successfully';
+      },
       error: (e: Error) => e.message ?? 'An error occurred while creating the resume',
     });
   }

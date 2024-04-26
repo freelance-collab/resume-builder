@@ -73,7 +73,7 @@ const config = {
         cm: ['var(--font-cm)', ...fontFamily.sans],
       },
       gridTemplateColumns: {
-        '4auto': 'repeat(auto-fit, minmax(250px, 1fr))',
+        '4auto': 'repeat(auto-fill, minmax(250px, 1fr))',
       },
     },
   },

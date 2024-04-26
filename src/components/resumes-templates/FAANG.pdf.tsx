@@ -95,9 +95,7 @@ const ExperienceItem = ({ experience }: { experience: ResumeSchemaType['experien
           <Text>{experience.company}</Text>
         </View>
         <Text>
-          <>
-            {experience.startDate} - {experience.endDate ?? 'Present'}
-          </>
+          {experience.startDate.getFullYear()} - {experience.endDate?.getFullYear() ?? 'Present'}
         </Text>
       </View>
       <View style={tw('mt-2')}>
@@ -124,7 +122,7 @@ const EducationItem = ({ education }: { education: ResumeSchemaType['educations'
         <Text>, {education.university}</Text>
       </View>
       <Text>
-        {education.startYear}-{education.endYear ?? 'Present'}
+        {education.startYear} - {education.endYear ?? 'Present'}
       </Text>
     </View>
     {education.grade && <Text>{education.grade}</Text>}
