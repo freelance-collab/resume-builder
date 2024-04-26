@@ -276,10 +276,17 @@ export const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSe
               onMaxSelected?.(selected.length);
               return;
             }
-            setInputValue('');
-            const newOptions = [...selected, { value, label: value }];
-            setSelected(newOptions);
-            onChange?.(newOptions);
+            if (
+              selected.findIndex(
+                (item) =>
+                  item.value.toLowerCase() === value.toLowerCase() || item.label.toLowerCase() === value.toLowerCase(),
+              ) == -1
+            ) {
+              setInputValue('');
+              const newOptions = [...selected, { value, label: value }];
+              setSelected(newOptions);
+              onChange?.(newOptions);
+            }
           }}
         >{`Create "${inputValue}"`}</CommandItem>
       );
