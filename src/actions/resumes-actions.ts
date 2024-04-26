@@ -1,7 +1,6 @@
 'use server';
 
 import { Prisma } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
 
 import prisma from '@/lib/prisma';
 
@@ -25,11 +24,7 @@ export const getResumeByIdAction = asyncAuthHandler((userId, id: string) => {
   });
 });
 
-interface CreateResumeData {
-  name: string;
-  description?: string;
-}
-export const createResumeAction = asyncAuthHandler(async (userId, data: CreateResumeData) => {
+export const createResumeAction = asyncAuthHandler(async (userId, data: Omit<Prisma.ResumeCreateInput, 'user'>) => {
   const isExisting = await prisma.resume.findUnique({
     where: {
       name_userId: {
@@ -45,23 +40,42 @@ export const createResumeAction = asyncAuthHandler(async (userId, data: CreateRe
 
   return prisma.resume.create({
     data: {
-      userId,
       ...data,
+      userId,
     },
   });
 });
 
-// export const nativeCreateResume = async (data: CreateResumeData) => {
-//   const session = await auth();
+export const publishResumeAction = asyncAuthHandler(async (userId, id: string) => {
+  await prisma.resume.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      published: true,
+    },
+  });
+});
 
-//   if (!session) {
-//     throw new Error('Unauthorized');
-//   }
+export const updateResumeAction = asyncAuthHandler(
+  async (userId, data: { id: string; content?: string; name?: string }) => {
+    const newData: Prisma.ResumeUpdateInput = {};
 
-//   return prisma.resume.create({
-//     data: {
-//       ...data,
-//       userId: session.user.id,
-//     },
-//   });
-// };
+    if (data.content) {
+      newData.content = data.content;
+    }
+
+    if (data.name) {
+      newData.name = data.name;
+    }
+
+    await prisma.resume.update({
+      where: {
+        id: data.id,
+        userId,
+      },
+      data: newData,
+    });
+  },
+);

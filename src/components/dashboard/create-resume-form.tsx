@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { initialResumeData } from '../resumes-templates/schema';
 import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
@@ -27,7 +28,8 @@ export const CreateResumeForm = ({ onSubmit }: { onSubmit: () => void }) => {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     onSubmit();
 
-    toast.promise(createResume(values), {
+    const content = JSON.stringify(initialResumeData);
+    toast.promise(createResume({ ...values, content }), {
       loading: 'Creating resume...',
       success: (data) => {
         router.push(`/builder/${data.id}`);

@@ -25,7 +25,7 @@ export const resumeSchema = z.object({
       }),
     ),
   }),
-  objective: z.string(),
+  objective: z.string().optional(),
   educations: z.array(
     z.object({
       university: z.string(),
@@ -62,67 +62,66 @@ export const resumeSchema = z.object({
 
 export type ResumeSchemaType = z.infer<typeof resumeSchema>;
 
-export const data: ResumeSchemaType = {
+export const initialResumeData: ResumeSchemaType = {
   personalInformation: {
-    name: 'Mahmoud Elalfy',
-    jobTitle: 'Front-End Developer',
+    name: '',
+    jobTitle: '',
     country: {
       label: 'Egypt',
       value: 'EG',
     },
     phoneNumber: '',
     links: [
-      {
-        title: 'mahmoudelalfy13@gmail.com',
-        href: 'mailto:mahmoudelalfy13@gmail.com',
-      },
-      {
-        title: 'linkedin',
-        href: 'mailto:mahmoudelalfy13@gmail.com',
-      },
-      {
-        title: 'github',
-        href: 'mailto:mahmoudelalfy13@gmail.com',
-      },
-      {
-        title: 'Portfolio',
-        href: 'mailto:mahmoudelalfy13@gmail.com',
-      },
+      // {
+      //   title: 'mahmoudelalfy13@gmail.com',
+      //   href: 'mailto:mahmoudelalfy13@gmail.com',
+      // },
+      // {
+      //   title: 'linkedin',
+      //   href: 'mailto:mahmoudelalfy13@gmail.com',
+      // },
+      // {
+      //   title: 'github',
+      //   href: 'mailto:mahmoudelalfy13@gmail.com',
+      // },
+      // {
+      //   title: 'Portfolio',
+      //   href: 'mailto:mahmoudelalfy13@gmail.com',
+      // },
     ],
   },
-  objective:
-    'Front-end developer with expertise in React, Next.js, and basic knowledge of Angular. Have a solid background in Back-End with Express Node.js and Nest.js. Seeking a role to apply my expertise and grow in web development.',
+  objective: '',
 
   educations: [
-    {
-      major: 'Bachelor of Computers and Systems Engineering',
-      university: 'Zagazig University',
-      startYear: '2017',
-      grade: 'Very Good 82%',
-    },
+    // {
+    //   major: 'Bachelor of Computers and Systems Engineering',
+    //   university: 'Zagazig University',
+    //   startYear: '2017',
+    //   grade: 'Very Good 82%',
+    // },
   ],
   skills: [
-    {
-      category: 'Languages',
-      skills: ['Javascript', 'Typescript', 'SQL'],
-    },
-    {
-      category: 'Frameworks',
-      skills: ['React', 'Nextjs', 'Angular', 'Nodejs', 'Nestjs'],
-    },
-    {
-      category: 'Libraries',
-      skills: ['Redux', 'Zustand', 'React Query', 'tailwindcss', 'MUI'],
-    },
+    // {
+    //   category: 'Languages',
+    //   skills: ['Javascript', 'Typescript', 'SQL'],
+    // },
+    // {
+    //   category: 'Frameworks',
+    //   skills: ['React', 'Nextjs', 'Angular', 'Nodejs', 'Nestjs'],
+    // },
+    // {
+    //   category: 'Libraries',
+    //   skills: ['Redux', 'Zustand', 'React Query', 'tailwindcss', 'MUI'],
+    // },
   ],
   experiences: [
-    {
-      jobTitle: 'Front-End Developer',
-      company: 'Freelancing',
-      startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-      description:
-        'However, if you arent manually creating the list and instead are just pasting it in from some dynamic data source... you will need to parse the html string so that each ul and li looks like the snippet above (<View style=, etc.)  I had to use this module for parsing my html: react-html-parser And then parse my string like this: ',
-    },
+    // {
+    //   jobTitle: 'Front-End Developer',
+    //   company: 'Freelancing',
+    //   startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    //   description:
+    //     'However, if you arent manually creating the list and instead are just pasting it in from some dynamic data source... you will need to parse the html string so that each ul and li looks like the snippet above (<View style=, etc.)  I had to use this module for parsing my html: react-html-parser And then parse my string like this: ',
+    // },
   ],
   projects: [],
 };

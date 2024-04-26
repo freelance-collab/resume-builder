@@ -45,33 +45,43 @@ export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
         </div>
       </div>
 
-      <Section title='objective'>
-        <p>{data.objective}</p>
-      </Section>
+      {data.objective && (
+        <Section title='objective'>
+          <p>{data.objective}</p>
+        </Section>
+      )}
 
-      <Section title='education'>
-        {data.educations.map((education, i) => (
-          <EducationItem key={i} education={education} />
-        ))}
-      </Section>
+      {data.educations.length > 0 && (
+        <Section title='education'>
+          {data.educations.map((education, i) => (
+            <EducationItem key={i} education={education} />
+          ))}
+        </Section>
+      )}
 
-      <Section title='skills'>
-        {data.skills.map((skill) => (
-          <SkillItem key={skill.category} skill={skill} />
-        ))}
-      </Section>
+      {data.skills.length > 0 && (
+        <Section title='skills'>
+          {data.skills.map((skill) => (
+            <SkillItem key={skill.category} skill={skill} />
+          ))}
+        </Section>
+      )}
 
-      <Section title='EXPERIENCE'>
-        {data.experiences.map((experience, i) => (
-          <ExperienceItem key={i} experience={experience} />
-        ))}
-      </Section>
+      {data.experiences.length > 0 && (
+        <Section title='EXPERIENCE'>
+          {data.experiences.map((experience, i) => (
+            <ExperienceItem key={i} experience={experience} />
+          ))}
+        </Section>
+      )}
 
-      <Section title='Projects'>
-        {data.projects.map((project, i) => (
-          <ProjectItem key={i} project={project} />
-        ))}
-      </Section>
+      {data.projects.length > 0 && (
+        <Section title='Projects'>
+          {data.projects.map((project, i) => (
+            <ProjectItem key={i} project={project} />
+          ))}
+        </Section>
+      )}
     </div>
   );
 };
@@ -136,7 +146,7 @@ const EducationItem = ({ education }: { education: ResumeSchemaType['educations'
     <div className={cn('flex flex-row items-center justify-between')}>
       <div className={cn('flex flex-row items-center')}>
         <p className={cn('mb-0.5 font-bold')}>{education.major}</p>
-        <p>, {education.university}</p>
+        {education.university && <p>, {education.university}</p>}
       </div>
       <p>
         {education.startYear}-{education.endYear ?? 'Present'}
