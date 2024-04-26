@@ -18,7 +18,7 @@ export const ResumePreview = ({ data }: { data: ResumeSchemaType }) => {
   // if (instance.loading || instance.error) return null;
 
   return (
-    <div className='min-h-[842px] w-[595px] border'>
+    <div className='h-fit min-h-[842px] w-[595px] border bg-white text-black'>
       <FAANGTemplete data={data} />
       {/* 
       <Document file={URL.createObjectURL(instance.blob!)}>

@@ -65,7 +65,7 @@ export const SkillsForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) 
       </div>
       <AddFieldButton
         onClick={async () => {
-          const res = await form.trigger('educations');
+          const res = await form.trigger('skills');
 
           if (res) {
             appendSkills({
@@ -81,7 +81,7 @@ export const SkillsForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) 
   );
 };
 
-const skills = [
+export const skills = [
   'HTML',
   'CSS',
   'JavaScript',

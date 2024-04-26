@@ -10,6 +10,7 @@ import { Textarea } from '../ui/textarea';
 import { EducationForm } from './education-form';
 import { ExperienceForm } from './experience-form';
 import { PersonalInformationForm } from './personal-information-form';
+import { ProjectsForm } from './projects-form';
 import { SkillsForm } from './skills-form';
 
 export function CreateResumeForm({ form }: { form: UseFormReturn<ResumeSchemaType> }) {
@@ -66,6 +67,13 @@ export function CreateResumeForm({ form }: { form: UseFormReturn<ResumeSchemaTyp
               <AccordionTrigger>Experience</AccordionTrigger>
               <AccordionContent className='px-1 py-2'>
                 <ExperienceForm form={form} />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value='projects'>
+              <AccordionTrigger>Projects</AccordionTrigger>
+              <AccordionContent className='px-1 py-2'>
+                <ProjectsForm form={form} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

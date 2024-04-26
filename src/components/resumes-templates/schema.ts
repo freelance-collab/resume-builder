@@ -50,6 +50,14 @@ export const resumeSchema = z.object({
       description: z.string(),
     }),
   ),
+  projects: z.array(
+    z.object({
+      title: z.string().min(2),
+      href: z.string().url(),
+      technologies: z.array(z.string()),
+      description: z.string(),
+    }),
+  ),
 });
 
 export type ResumeSchemaType = z.infer<typeof resumeSchema>;
@@ -116,4 +124,5 @@ export const data: ResumeSchemaType = {
         'However, if you arent manually creating the list and instead are just pasting it in from some dynamic data source... you will need to parse the html string so that each ul and li looks like the snippet above (<View style=, etc.)  I had to use this module for parsing my html: react-html-parser And then parse my string like this: ',
     },
   ],
+  projects: [],
 };

@@ -15,7 +15,7 @@ export const FONT_SIZE = {
 
 export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
   return (
-    <div className={cn('font-cm p-8', FONT_SIZE.base)}>
+    <div className={cn('p-8 font-cm', FONT_SIZE.base)}>
       {/* Heading */}
       <div className='flex flex-col items-center justify-center text-center'>
         <h1 className={cn('mb-1 font-bold uppercase tracking-wider', FONT_SIZE['2xl'])}>
@@ -66,6 +66,34 @@ export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
           <ExperienceItem key={i} experience={experience} />
         ))}
       </Section>
+
+      <Section title='Projects'>
+        {data.projects.map((project, i) => (
+          <ProjectItem key={i} project={project} />
+        ))}
+      </Section>
+    </div>
+  );
+};
+
+const ProjectItem = ({ project }: { project: ResumeSchemaType['projects'][number] }) => {
+  return (
+    <div className='mb-1'>
+      <div className={cn('flex flex-row items-start gap-4')}>
+        <h3 className={cn('font-bold text-blue-500', FONT_SIZE.lg)}>
+          <a href={project.href}>{project.title}</a>
+        </h3>
+        <div>
+          {project.technologies.map((tec, i) => (
+            <span key={tec} className='mr-0.5 italic'>
+              {tec}
+              {i !== project.technologies.length - 1 && <span>,</span>}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <p>{project.description}</p>
     </div>
   );
 };
@@ -119,8 +147,8 @@ const EducationItem = ({ education }: { education: ResumeSchemaType['educations'
 );
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className={'mb-8'}>
-    <p className={cn('mb-1.5 border-b font-bold uppercase', FONT_SIZE.lg)}>{title}</p>
+  <div className={'mb-6'}>
+    <h2 className={cn('mb-1.5 border-b font-bold uppercase', FONT_SIZE.lg)}>{title}</h2>
     {children}
   </div>
 );
