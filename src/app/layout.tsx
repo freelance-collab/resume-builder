@@ -46,7 +46,7 @@ export default function RootLayout({
           <TooltipProvider>
             <div vaul-drawer-wrapper='' className='flex min-h-screen flex-col bg-background'>
               <Header />
-              <main className='flex flex-grow flex-col py-5'>{children}</main>
+              <main className='flex flex-grow flex-col'>{children}</main>
             </div>
             <Toaster richColors />
           </TooltipProvider>

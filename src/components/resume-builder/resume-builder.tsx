@@ -36,51 +36,49 @@ export function ResumeBuilder({ resume }: { resume: Resume }) {
   return (
     <>
       {published && <PublishDialog shareUrl={shareUrl} />}
-      <div className='px-10'>
-        <div className='mb-6 flex justify-between py-3'>
-          <div>
-            <TitleForm title={resume.name} />
-            {(published || resume.published) && (
-              <Link href={`/resumes/${resume.id}`} className='flex items-center p-2'>
-                {shareUrl} <LinkIcon className='ml-1 size-4' />
-              </Link>
-            )}
-          </div>
-          <div className='flex gap-2'>
-            <Button variant='outline' onClick={() => setPreview(!preview)}>
-              <Columns2Icon className='mr-1 h-4 w-4' />
-              {preview ? 'Hide Preview' : 'Preview'}
-            </Button>
-            <SaveResumeButton
-              handleSubmit={form.handleSubmit}
-              resumeId={resume.id}
-              isUpToDate={!Object.keys(form.formState.dirtyFields).length}
-              onSuccess={form.reset}
-            />
-            {!resume.published && !published && (
-              <PublishButton
-                resumeId={resume.id}
-                onSuccess={() => setIsPublished(true)}
-                shouldPublish={form.trigger}
-                isUpToDate={!Object.keys(form.formState.dirtyFields).length}
-              />
-            )}
-          </div>
-        </div>
-        <ResizablePanelGroup direction='horizontal'>
-          <ResizablePanel className={cn('pb-10', !preview && 'mx-auto max-w-6xl')}>
-            <CreateResumeForm form={form} />
-          </ResizablePanel>
-          {preview && (
-            <>
-              <ResizableHandle withHandle className='mx-10' />
-              <ResizablePanel className='flex justify-center'>
-                <ResumePreview data={form.getValues()} />
-              </ResizablePanel>
-            </>
+      <div className='mb-6 flex justify-between py-3'>
+        <div>
+          <TitleForm title={resume.name} />
+          {(published || resume.published) && (
+            <Link href={`/resumes/${resume.id}`} className='flex items-center p-2'>
+              {shareUrl} <LinkIcon className='ml-1 size-4' />
+            </Link>
           )}
-        </ResizablePanelGroup>
+        </div>
+        <div className='flex gap-2'>
+          <Button variant='outline' onClick={() => setPreview(!preview)}>
+            <Columns2Icon className='mr-1 h-4 w-4' />
+            {preview ? 'Hide Preview' : 'Preview'}
+          </Button>
+          <SaveResumeButton
+            handleSubmit={form.handleSubmit}
+            resumeId={resume.id}
+            isUpToDate={!Object.keys(form.formState.dirtyFields).length}
+            onSuccess={form.reset}
+          />
+          {!resume.published && !published && (
+            <PublishButton
+              resumeId={resume.id}
+              onSuccess={() => setIsPublished(true)}
+              shouldPublish={form.trigger}
+              isUpToDate={!Object.keys(form.formState.dirtyFields).length}
+            />
+          )}
+        </div>
       </div>
+      <ResizablePanelGroup direction='horizontal'>
+        <ResizablePanel className={cn('pb-10', !preview && 'mx-auto max-w-6xl')}>
+          <CreateResumeForm form={form} />
+        </ResizablePanel>
+        {preview && (
+          <>
+            <ResizableHandle withHandle className='mx-10' />
+            <ResizablePanel className='flex justify-center'>
+              <ResumePreview data={form.getValues()} />
+            </ResizablePanel>
+          </>
+        )}
+      </ResizablePanelGroup>
     </>
   );
 }

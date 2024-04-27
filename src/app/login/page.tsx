@@ -13,7 +13,7 @@ export default function LoginPage() {
         <form
           action={async () => {
             'use server';
-            await signIn('github',{redirectTo: '/'});
+            await signIn('github', { redirectTo: '/' });
           }}
         >
           <Button variant='outline' className='flex w-full items-center gap-2'>
