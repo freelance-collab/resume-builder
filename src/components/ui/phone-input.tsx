@@ -78,7 +78,7 @@ const CountrySelect = ({ disabled, value, onChange, options }: CountrySelectProp
           <ChevronsUpDown className={cn('-mr-2 h-4 w-4 opacity-50', disabled ? 'hidden' : 'opacity-100')} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[300px] p-0'>
+      <PopoverContent className='!w-[300px] p-0'>
         <Command>
           <CommandList>
             <ScrollArea className='h-72'>
