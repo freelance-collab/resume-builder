@@ -17,17 +17,17 @@ export default auth((req) => {
     return NextResponse.rewrite(url);
   }
 
-  // Unauthenticated Redirect to '/login'
-  if (!req.auth && url.pathname !== '/login') {
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
-  }
+  // // Unauthenticated Redirect to '/login'
+  // if (!req.auth && url.pathname !== '/login') {
+  //   url.pathname = '/login';
+  //   return NextResponse.redirect(url);
+  // }
 
-  // Authenticated Redirect to '/'
-  if (req.auth && url.pathname === '/login') {
-    url.pathname = '/';
-    return NextResponse.redirect(url);
-  }
+  // // Authenticated Redirect to '/'
+  // if (req.auth && url.pathname === '/login') {
+  //   url.pathname = '/';
+  //   return NextResponse.redirect(url);
+  // }
 
   return NextResponse.next();
 });
