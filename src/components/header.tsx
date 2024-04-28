@@ -1,21 +1,9 @@
-import { CircleUser, Package2, Search } from 'lucide-react';
-import Image from 'next/image';
+import { Package2, Search } from 'lucide-react';
 import Link from 'next/link';
 
-import { auth, signOut } from '@/auth';
-
 import { ThemeSwitcher } from './theme-switcher';
-import { Button } from './ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
 import { Input } from './ui/input';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { UserButton } from './user-button';
 
 export const Header = () => {
   return (
@@ -42,45 +30,5 @@ export const Header = () => {
         <UserButton />
       </div>
     </header>
-  );
-};
-
-const UserButton = async () => {
-  const session = await auth();
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='outline' size='icon' className=' rounded-full'>
-          {session?.user?.image ? (
-            <Image src={session.user.image} alt='User' width={32} height={32} className='rounded-full' />
-          ) : (
-            <CircleUser className='h-5 w-5' />
-          )}
-          <span className='sr-only'>Toggle user menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <form
-            action={async () => {
-              'use server';
-              await signOut({
-                redirectTo: '/login',
-              });
-            }}
-          >
-            <button type='submit' className='w-full text-left'>
-              Sign out
-            </button>
-          </form>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 };

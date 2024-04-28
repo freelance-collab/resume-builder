@@ -8,6 +8,7 @@ import { Toaster } from 'sonner';
 import { Header } from '@/components/header';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { SessionProvider } from '@/providers/session-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 export const metadata: Metadata = {
@@ -44,10 +45,12 @@ export default function RootLayout({
       <body className={cn('bg-background font-sans antialiased', fontSans.variable, fontCM.variable)}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <TooltipProvider>
-            <div vaul-drawer-wrapper='' className='flex min-h-screen flex-col bg-background'>
-              <Header />
-              <main className='flex flex-grow flex-col'>{children}</main>
-            </div>
+            <SessionProvider>
+              <div vaul-drawer-wrapper='' className='flex min-h-screen flex-col bg-background'>
+                <Header />
+                <main className='flex flex-grow flex-col'>{children}</main>
+              </div>
+            </SessionProvider>
             <Toaster richColors />
           </TooltipProvider>
         </ThemeProvider>
