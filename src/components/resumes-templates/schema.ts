@@ -64,8 +64,8 @@ export type ResumeSchemaType = z.infer<typeof resumeSchema>;
 
 export const initialResumeData: ResumeSchemaType = {
   personalInformation: {
-    name: '',
-    jobTitle: '',
+    name: 'John Dee',
+    jobTitle: 'Software Engineer',
     country: {
       label: 'Egypt',
       value: 'EG',
