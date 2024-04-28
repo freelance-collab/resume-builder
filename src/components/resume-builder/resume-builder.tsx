@@ -15,12 +15,13 @@ import { ResumePreview } from '@/components/resume-builder/resume-preview';
 import { resumeSchema, ResumeSchemaType } from '@/components/resumes-templates/schema';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { saveResume } from '@/lib/local-resume';
 import { cn } from '@/lib/utils';
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Input } from '../ui/input';
 
-export function ResumeBuilder({ resume }: { resume: Resume }) {
+export function ResumeBuilder({ resume, isLocal = false }: { resume: Resume; isLocal?: boolean }) {
   const resumeContent: ResumeSchemaType = JSON.parse(resume.content);
 
   const form = useForm<ResumeSchemaType>({
@@ -33,9 +34,11 @@ export function ResumeBuilder({ resume }: { resume: Resume }) {
 
   const shareUrl = typeof window && `${window.location.origin}/resumes/${resume.id}`;
 
+  const isResumeUpToDate = !Object.keys(form.formState.dirtyFields).length;
+
   return (
     <>
-      {published && <PublishDialog shareUrl={shareUrl} />}
+      {published && <PublishedDialog shareUrl={shareUrl} />}
       <div className='mb-6 flex justify-between py-3'>
         <div>
           <TitleForm title={resume.name} />
@@ -50,18 +53,22 @@ export function ResumeBuilder({ resume }: { resume: Resume }) {
             <Columns2Icon className='mr-1 h-4 w-4' />
             {preview ? 'Hide Preview' : 'Preview'}
           </Button>
+
           <SaveResumeButton
             handleSubmit={form.handleSubmit}
             resumeId={resume.id}
-            isUpToDate={!Object.keys(form.formState.dirtyFields).length}
+            isUpToDate={isResumeUpToDate}
             onSuccess={form.reset}
+            isLocal={isLocal}
           />
+
           {!resume.published && !published && (
             <PublishButton
               resumeId={resume.id}
               onSuccess={() => setIsPublished(true)}
               shouldPublish={form.trigger}
-              isUpToDate={!Object.keys(form.formState.dirtyFields).length}
+              isUpToDate={isResumeUpToDate}
+              isLocal={isLocal}
             />
           )}
         </div>
@@ -109,18 +116,25 @@ const SaveResumeButton = ({
   handleSubmit,
   isUpToDate,
   onSuccess,
+  isLocal,
 }: {
   resumeId: string;
   handleSubmit: UseFormHandleSubmit<ResumeSchemaType>;
   isUpToDate: boolean;
   onSuccess: (values: ResumeSchemaType) => void;
+  isLocal: boolean;
 }) => {
   const [loading, startTransition] = useTransition();
 
   const updateResumeWithContent = async (values: ResumeSchemaType) => {
     try {
       const content = JSON.stringify(values);
-      await updateResume({ id: resumeId, content });
+
+      if (isLocal) {
+        saveResume(content);
+      } else {
+        await updateResume({ id: resumeId, content });
+      }
 
       toast.success('Your Resume has been saved');
 
@@ -152,11 +166,13 @@ const PublishButton = ({
   onSuccess,
   shouldPublish,
   isUpToDate,
+  isLocal,
 }: {
   resumeId: string;
   onSuccess: () => void;
   shouldPublish: () => Promise<boolean>;
   isUpToDate: boolean;
+  isLocal: boolean;
 }) => {
   const [loading, startTransition] = useTransition();
 
@@ -174,6 +190,11 @@ const PublishButton = ({
   };
 
   const handlePublish = async () => {
+    if (isLocal) {
+      toast.error('You should be logged in to utilize publish feature');
+      return;
+    }
+
     if (!isUpToDate) {
       toast.error('Please save your resume first');
       return;
@@ -201,7 +222,7 @@ const PublishButton = ({
   );
 };
 
-const PublishDialog = ({ shareUrl }: { shareUrl: string }) => {
+const PublishedDialog = ({ shareUrl }: { shareUrl: string }) => {
   return (
     <Dialog defaultOpen>
       <Confetti
