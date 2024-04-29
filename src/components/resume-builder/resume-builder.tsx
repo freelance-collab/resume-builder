@@ -4,7 +4,7 @@ import { LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { CreateResumeForm } from '@/components/resume-builder/create-resume-form';
+import { CreateResumeForm } from '@/components/resume-builder/create-resume-form/create-resume-form';
 import { ResumePreview } from '@/components/resume-builder/resume-preview';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { getRandomName } from '@/lib/random-name';

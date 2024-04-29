@@ -4,8 +4,8 @@ import { ResumeSchemaType } from '@/components/resumes-templates/schema';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useResumeForm } from '@/providers/resume-form-provider';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { Textarea } from '../ui/textarea';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../ui/accordion';
+import { Textarea } from '../../ui/textarea';
 import { EducationForm } from './education-form';
 import { ExperienceForm } from './experience-form';
 import { PersonalInformationForm } from './personal-information-form';

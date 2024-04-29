@@ -4,7 +4,7 @@ import { getUserResumes } from '@/actions/resumes';
 
 import { Button } from '../ui/button';
 
-export const ResumesList = async () => {
+export const ResumesListView = async () => {
   const resumes = await getUserResumes({});
 
   return (

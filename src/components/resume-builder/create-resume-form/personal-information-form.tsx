@@ -1,11 +1,11 @@
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { type ResumeSchemaType } from '../resumes-templates/schema';
-import { FloatingLabelInput } from '../ui/floating-label-input';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import { PhoneInput } from '../ui/phone-input';
+import { type ResumeSchemaType } from '../../resumes-templates/schema';
+import { FloatingLabelInput } from '../../ui/floating-label-input';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
+import { Input } from '../../ui/input';
+import { PhoneInput } from '../../ui/phone-input';
 import { CountryDropdown } from './country-input';
 import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 import { StateDropdown } from './state-input';

@@ -1,10 +1,10 @@
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { ResumeSchemaType } from '../resumes-templates/schema';
-import { FloatingLabelInput } from '../ui/floating-label-input';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { ResumeSchemaType } from '../../resumes-templates/schema';
+import { FloatingLabelInput } from '../../ui/floating-label-input';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 
 const year = new Date().getFullYear();

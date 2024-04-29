@@ -1,6 +1,6 @@
 import { MinusIcon, PlusIcon } from 'lucide-react';
 
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 
 interface FormButtonProps {
   onClick: () => void;

@@ -1,11 +1,11 @@
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { ResumeSchemaType } from '../resumes-templates/schema';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import { MultipleSelector } from '../ui/multiple-selector';
-import { Textarea } from '../ui/textarea';
+import { ResumeSchemaType } from '../../resumes-templates/schema';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
+import { Input } from '../../ui/input';
+import { MultipleSelector } from '../../ui/multiple-selector';
+import { Textarea } from '../../ui/textarea';
 import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 import { skills } from './skills-form';
 
