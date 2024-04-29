@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { getUserResumes } from '@/actions/resumes';
 
-import { CreateResumeDialog } from './create-resume-dialog';
+import { Button } from '../ui/button';
 
 export const ResumesList = async () => {
   const resumes = await getUserResumes({});
@@ -23,8 +23,10 @@ export const ResumesList = async () => {
           </Link>
         ))}
 
-        <li className='center h-[300px] rounded-xl border'>
-          <CreateResumeDialog />
+        <li className='center h-[300px]'>
+          <Button asChild>
+            <Link href='/resumes/builder'>Create New Resume</Link>
+          </Button>
         </li>
       </ul>
     </>
