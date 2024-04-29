@@ -17,7 +17,7 @@ const ResumeBuilder = dynamic(
   },
 );
 
-const BuilderPage = async () => {
+const BuilderPage = () => {
   return (
     <div className='mx-10'>
       <ResumeFormProvider>

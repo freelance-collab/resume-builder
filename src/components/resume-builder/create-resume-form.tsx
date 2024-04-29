@@ -1,9 +1,8 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
-
 import { ResumeSchemaType } from '@/components/resumes-templates/schema';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { useResumeForm } from '@/providers/resume-form-provider';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { Textarea } from '../ui/textarea';
@@ -13,7 +12,9 @@ import { PersonalInformationForm } from './personal-information-form';
 import { ProjectsForm } from './projects-form';
 import { SkillsForm } from './skills-form';
 
-export function CreateResumeForm({ form }: { form: UseFormReturn<ResumeSchemaType> }) {
+export function CreateResumeForm() {
+  const { form } = useResumeForm();
+
   const onSubmit = (values: ResumeSchemaType) => {
     console.log(values);
   };

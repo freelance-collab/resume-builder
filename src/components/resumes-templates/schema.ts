@@ -1,6 +1,8 @@
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { z } from 'zod';
 
+export const FORM_DATA_KEY = 'resume-form';
+
 export const resumeSchema = z.object({
   personalInformation: z.object({
     name: z.string().min(2, {

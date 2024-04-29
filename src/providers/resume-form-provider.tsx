@@ -1,6 +1,8 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Resume } from '@prisma/client';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
 import { initialResumeData, resumeSchema, ResumeSchemaType } from '@/components/resumes-templates/schema';
@@ -11,6 +13,7 @@ const FORM_DATA_KEY = 'resume-form';
 interface IResumeFormContext {
   form: UseFormReturn<ResumeSchemaType>;
   isResumeUpToDate: boolean;
+  resume?: Resume;
 }
 
 const ResumeFormContext = createContext<IResumeFormContext>({} as IResumeFormContext);
@@ -46,5 +49,15 @@ export const ResumeFormProvider = ({ resume, children }: { resume?: Resume; chil
 
   const isResumeUpToDate = !Object.keys(form.formState.dirtyFields).length;
 
-  return <ResumeFormContext.Provider value={{ form, isResumeUpToDate }}>{children}</ResumeFormContext.Provider>;
+  return <ResumeFormContext.Provider value={{ form, isResumeUpToDate, resume }}>{children}</ResumeFormContext.Provider>;
+};
+
+export const useResumeForm = () => {
+  const resumeFormContext = useContext(ResumeFormContext);
+
+  if (!resumeFormContext) {
+    throw new Error('resumeFormContext has to be used within <ResumeFormProvider>');
+  }
+
+  return resumeFormContext;
 };
