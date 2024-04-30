@@ -5,10 +5,10 @@ export const FORM_DATA_KEY = 'resume-form';
 
 export const resumeSchema = z.object({
   personalInformation: z.object({
-    name: z.string().min(2, {
+    name: z.string().trim().min(2, {
       message: 'Name must be at least 2 characters',
     }),
-    jobTitle: z.string().min(2, {
+    jobTitle: z.string().trim().min(2, {
       message: 'Job title must be at least 2 characters',
     }),
     phoneNumber: z.string().refine(isValidPhoneNumber, { message: 'Invalid phone number' }),
@@ -20,14 +20,14 @@ export const resumeSchema = z.object({
     address: z.string().optional(),
     links: z.array(
       z.object({
-        title: z.string().min(2, {
+        title: z.string().trim().min(2, {
           message: 'Title must be at least 2 characters',
         }),
         href: z.string().url('Invalid URL, URL must start with http, https or mailto'),
       }),
     ),
   }),
-  objective: z.string().optional(),
+  objective: z.string().trim().optional(),
   educations: z.array(
     z.object({
       university: z.string(),
@@ -39,7 +39,7 @@ export const resumeSchema = z.object({
   ),
   skills: z.array(
     z.object({
-      category: z.string(),
+      category: z.string().trim().min(2),
       skills: z.array(z.string()),
     }),
   ),

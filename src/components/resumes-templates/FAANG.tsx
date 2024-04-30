@@ -45,7 +45,7 @@ export const FAANGTemplete = ({ data }: { data: ResumeSchemaType }) => {
         </div>
       </div>
 
-      {data.objective && (
+      {data.objective?.trim() && (
         <Section title='objective'>
           <p>{data.objective}</p>
         </Section>
