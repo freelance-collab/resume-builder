@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Confetti from 'react-confetti';
 import { toast } from 'sonner';
 
@@ -18,12 +19,14 @@ export const PublishedResumeAlert = ({ shareUrl }: { shareUrl: string }) => {
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className='text-xl'>Resume Published</DialogTitle>
+
+          <Image src='/celeb.svg' width={300} height={300} alt='celeb' className='mx-auto' />
           <DialogDescription>
             <h4 className='font-semibold'>Share the URL</h4>
             Anyone with this link can view and download your resume
           </DialogDescription>
         </DialogHeader>
-        <div className='flex w-full flex-col items-center gap-2 border-b pb-4'>
+        <div className='flex w-full flex-col items-center gap-2 pb-2'>
           <Input className='w-full' readOnly value={shareUrl} />
           <Button
             className='mt-2 w-full'
