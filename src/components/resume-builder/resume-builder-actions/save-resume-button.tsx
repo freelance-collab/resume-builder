@@ -5,6 +5,7 @@ import { useTransition } from 'react';
 import { toast } from 'sonner';
 
 import { createResume } from '@/actions/resumes';
+import { convertToImage } from '@/lib/utils';
 import { useResumeForm } from '@/providers/resume-form-provider';
 
 import { FORM_DATA_KEY } from '../../resumes-templates/schema';
@@ -24,9 +25,14 @@ export const SaveResumeButton = ({ title, onUnAuthenticated }: { title: string; 
     try {
       const content = JSON.stringify(form.getValues());
 
+      const imageUrl = await convertToImage();
+      const formData = new FormData();
+      formData.set('image', imageUrl!);
+
       const resume = await createResume({
         name: title,
         content,
+        formData,
       });
 
       toast.success('Your Resume has been saved');

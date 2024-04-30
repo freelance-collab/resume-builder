@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  img,
+  canvas {
+    @apply inline-block;
+  }
+
   :root {
     --background: 184 34% 100%;
     --foreground: 184 58% 1%;

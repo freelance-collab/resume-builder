@@ -3,9 +3,9 @@ import { useTransition } from 'react';
 import { toast } from 'sonner';
 
 import { updateResume } from '@/actions/resumes';
+import { Button } from '@/components/ui/button';
+import { convertToImage } from '@/lib/utils';
 import { useResumeForm } from '@/providers/resume-form-provider';
-
-import { Button } from '../../ui/button';
 
 export const SaveChangesButton = () => {
   const { form, isResumeUpToDate, resume } = useResumeForm();
@@ -17,7 +17,11 @@ export const SaveChangesButton = () => {
     try {
       const content = JSON.stringify(form.getValues());
 
-      await updateResume({ id: resume.id, content });
+      const imageUrl = await convertToImage();
+      const formData = new FormData();
+      formData.set('image', imageUrl!);
+
+      await updateResume({ id: resume.id, content, formData });
 
       toast.success('Your Resume has been saved');
 

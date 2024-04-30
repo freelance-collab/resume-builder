@@ -19,7 +19,7 @@ export const ResumePreview = ({ data }: { data: ResumeSchemaType }) => {
   // if (instance.loading || instance.error) return null;
 
   return (
-    <div className='h-fit min-h-[842px] w-[595px] border bg-white text-black'>
+    <div className='h-fit min-h-[842px] w-[595px] border bg-white text-black' id='resume'>
       <FAANGTemplete data={data} />
 
       {/* <PDFViewer width={'100%'} height={'800px'} showToolbar={false}>
