@@ -5,7 +5,6 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Toaster } from 'sonner';
 
-import { Header } from '@/components/header';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { SessionProvider } from '@/providers/session-provider';
@@ -47,8 +46,7 @@ export default function RootLayout({
           <TooltipProvider>
             <SessionProvider>
               <div vaul-drawer-wrapper='' className='flex min-h-screen flex-col bg-background'>
-                <Header />
-                <main className='flex flex-grow flex-col'>{children}</main>
+                {children}
               </div>
             </SessionProvider>
             <Toaster richColors />
