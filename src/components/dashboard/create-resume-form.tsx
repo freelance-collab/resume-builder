@@ -29,14 +29,14 @@ export const CreateResumeForm = ({ onSubmit }: { onSubmit: () => void }) => {
     onSubmit();
 
     const content = JSON.stringify(initialResumeData);
-    toast.promise(createResume({ ...values, content }), {
-      loading: 'Creating resume...',
-      success: (data) => {
-        router.push(`/builder/${data.id}`);
-        return 'Resume created successfully';
-      },
-      error: (e: Error) => e.message ?? 'An error occurred while creating the resume',
-    });
+    // toast.promise(createResume({ ...values, content }), {
+    //   loading: 'Creating resume...',
+    //   success: (data) => {
+    //     router.push(`/builder/${data.id}`);
+    //     return 'Resume created successfully';
+    //   },
+    //   error: (e: Error) => e.message ?? 'An error occurred while creating the resume',
+    // });
   }
 
   return (
