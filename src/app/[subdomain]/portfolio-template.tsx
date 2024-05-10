@@ -7,15 +7,17 @@ export const PortfolioTemplate = ({ data }: { data: ResumeSchemaType }) => {
   return (
     <div className='container my-10 flex flex-wrap gap-10' id='resume'>
       <div className='h-fit flex-1 basis-[300px]'>
-        <div className='h-[200px] w-[200px] rounded-full'>
-          <Image
-            src='https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper.png'
-            width={300}
-            height={300}
-            alt='avatar'
-            className='h-full w-full rounded-full object-cover grayscale'
-          />
-        </div>
+        {data.personalInformation.image && (
+          <div className='h-[200px] w-[200px] rounded-full'>
+            <Image
+              src={data.personalInformation.image?.preview}
+              width={300}
+              height={300}
+              alt='avatar'
+              className='h-full w-full rounded-full object-cover'
+            />
+          </div>
+        )}
         <h1 className='my-4 text-xl font-bold uppercase'>{data.personalInformation.name}</h1>
         <p className='text-sm tracking-widest'>{data.objective}</p>
 
@@ -34,6 +36,16 @@ export const PortfolioTemplate = ({ data }: { data: ResumeSchemaType }) => {
               {data.personalInformation.country.label}
               {data.personalInformation.state && <>, {data.personalInformation.state}</>}
             </p>
+          </div>
+          <div className='py-3'>
+            <h2>Links</h2>
+            <div className='mt-1 flex flex-wrap gap-2'>
+              {data.personalInformation.links.map((link, i) => (
+                <a href={link.href} key={i} className='capitalize text-blue-600 no-underline'>
+                  {link.title}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
