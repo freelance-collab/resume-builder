@@ -19,7 +19,7 @@ export const SaveChangesButton = () => {
 
       const imageUrl = await convertToImage();
       const formData = new FormData();
-      formData.set('image', imageUrl!);
+      formData.set('imageUrl', imageUrl!);
 
       await updateResume({ id: resume.id, content, formData });
 

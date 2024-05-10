@@ -20,6 +20,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'e7.pngegg.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

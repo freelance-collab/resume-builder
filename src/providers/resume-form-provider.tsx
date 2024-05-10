@@ -7,6 +7,7 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 
 import { initialResumeData, resumeSchema, ResumeSchemaType } from '@/components/resumes-templates/schema';
 import { usePersistForm } from '@/hooks/use-persist-form';
+import { parseResume } from '@/lib/utils';
 
 const FORM_DATA_KEY = 'resume-form';
 
@@ -37,7 +38,7 @@ const getSavedData = () => {
 export const ResumeFormProvider = ({ resume, children }: { resume?: Resume; children: React.ReactNode }) => {
   const form = useForm<ResumeSchemaType>({
     resolver: zodResolver(resumeSchema),
-    defaultValues: resume ? JSON.parse(resume.content) : getSavedData(),
+    defaultValues: parseResume(resume ? JSON.parse(resume.content) : getSavedData()),
     mode: 'onChange',
   });
 

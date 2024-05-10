@@ -2,6 +2,7 @@
 
 import Autoplay from 'embla-carousel-autoplay';
 import { MailIcon, PhoneIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -41,8 +42,8 @@ const SectionOne = () => {
           <p className='mt-4 animate-fade-up text-xl text-gray-500 animate-delay-200'>
             Build and publish your resume as a website in less than 2 minutes
           </p>
-          <Button className='my-6 animate-fade-up px-8 py-3 animate-delay-[400ms]' size='lg'>
-            Start Now
+          <Button asChild className='my-6 animate-fade-up px-8 py-3 animate-delay-[400ms]' size='lg'>
+            <Link href='/dashboard'>Start Now</Link>
           </Button>
         </div>
         <div className='mt-10 flex animate-fade-down items-center space-x-6 lg:space-x-8'>

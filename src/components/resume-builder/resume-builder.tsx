@@ -4,8 +4,8 @@ import { LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { PortfolioTemplate } from '@/app/[subdomain]/portfolio-template';
 import { CreateResumeForm } from '@/components/resume-builder/create-resume-form/create-resume-form';
-import { ResumePreview } from '@/components/resume-builder/resume-preview';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { getRandomName } from '@/lib/random-name';
 import { cn } from '@/lib/utils';
@@ -55,7 +55,8 @@ export function ResumeBuilder() {
           <>
             <ResizableHandle withHandle className='mx-10' />
             <ResizablePanel className='flex justify-center'>
-              <ResumePreview data={form.getValues()} />
+              {/* <ResumePreview data={form.getValues()} /> */}
+              <PortfolioTemplate data={form.getValues()} />
             </ResizablePanel>
           </>
         )}
