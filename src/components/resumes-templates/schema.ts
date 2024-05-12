@@ -5,12 +5,7 @@ export const FORM_DATA_KEY = 'resume-form';
 
 export const resumeSchema = z.object({
   personalInformation: z.object({
-    image: z
-      .object({
-        file: z.instanceof(FileList),
-        preview: z.string(),
-      })
-      .optional(),
+    image: z.string().optional(),
     name: z.string().trim().min(2, {
       message: 'Name must be at least 2 characters',
     }),

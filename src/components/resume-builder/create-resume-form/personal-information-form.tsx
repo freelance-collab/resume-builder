@@ -1,5 +1,4 @@
 import { PencilIcon, XIcon } from 'lucide-react';
-import { ChangeEvent, useState } from 'react';
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -7,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { imageUpload } from '@/lib/utils';
 
 import { type ResumeSchemaType } from '../../resumes-templates/schema';
 import { FloatingLabelInput } from '../../ui/floating-label-input';
@@ -17,20 +17,8 @@ import { CountryDropdown } from './country-input';
 import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 import { StateDropdown } from './state-input';
 
-function getImageData(event: ChangeEvent<HTMLInputElement>) {
-  // FileList is immutable, so we need to create a new one
-  const dataTransfer = new DataTransfer();
-
-  // Add newly uploaded images
-  Array.from(event.target.files!).forEach((image) => dataTransfer.items.add(image));
-
-  const files = dataTransfer.files;
-  const displayUrl = URL.createObjectURL(event.target.files![0]);
-
-  return { files, displayUrl };
-}
-
 export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) => {
+  console.log();
   return (
     <>
       <FormField
@@ -42,19 +30,18 @@ export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSc
               <FormControl>
                 <div className='relative h-16 w-16 rounded-full'>
                   <Avatar className='h-full w-full'>
-                    <AvatarImage src={value?.preview} className='object-cover' />
+                    {value && <AvatarImage src={value} className='object-cover' />}
                     <AvatarFallback />
                   </Avatar>
                   <Input
                     type='file'
                     className='hidden'
                     id='image'
-                    onChange={(e) => {
-                      const { files, displayUrl } = getImageData(e);
-                      onChange({
-                        file: files,
-                        preview: displayUrl,
-                      });
+                    onChange={async (e) => {
+                      if (!e.target.files) return;
+                      const { fileInBase64 } = await imageUpload(e.target.files[0]);
+
+                      onChange(fileInBase64);
                     }}
                   />
                   <Tooltip>
@@ -83,6 +70,7 @@ export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSc
                           className='group absolute bottom-0 right-0 size-7 translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full border-none
                     drop-shadow-lg hover:bg-background'
                           onClick={() => onChange(undefined)}
+                          type='button'
                         >
                           <XIcon className='size-3 text-gray-400 duration-100 group-hover:text-primary' />
                         </Button>
