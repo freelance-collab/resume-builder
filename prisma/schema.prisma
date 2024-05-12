@@ -71,6 +71,7 @@ model Resume {
   userId      String
   published   Boolean @default(false)
   name        String
+  picture     String?
   description String  @default("")
   content     String  @default("[]")
 

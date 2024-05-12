@@ -1,7 +1,8 @@
 import { LoaderCircle } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
 
-import { getResumeById } from '@/actions/resumes';
+import { getResumeByIdAction } from '@/actions/resumes-actions';
 import { ResumeFormProvider } from '@/providers/resume-form-provider';
 
 const ResumeBuilder = dynamic(
@@ -27,10 +28,18 @@ export default async function ResumeBuilderPage({
 }) {
   const { id } = params;
 
-  const resume = await getResumeById(id);
+  const { data: resume, serverError } = await getResumeByIdAction({ id });
+
+  if (serverError) {
+    throw serverError;
+  }
+
+  if (resume === null) {
+    return notFound();
+  }
 
   if (!resume) {
-    throw new Error('Resume Not Found');
+    throw new Error('Something went wrong');
   }
 
   return (

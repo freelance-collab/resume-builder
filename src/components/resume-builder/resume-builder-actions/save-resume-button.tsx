@@ -4,8 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { createResume } from '@/actions/resumes';
-import { convertToImage } from '@/lib/utils';
+import { createResumeAction } from '@/actions/resumes-actions';
 import { useResumeForm } from '@/providers/resume-form-provider';
 
 import { FORM_DATA_KEY } from '../../resumes-templates/schema';
@@ -22,31 +21,34 @@ export const SaveResumeButton = ({ title, onUnAuthenticated }: { title: string; 
   }
 
   const handleSaveResume = async () => {
-    try {
-      const content = JSON.stringify(form.getValues());
+    const { personalInformation, ...formValues } = form.getValues();
+    const { picture, ...data } = personalInformation;
 
-      const imageUrl = await convertToImage();
-      const formData = new FormData();
-      formData.set('image', imageUrl!);
+    const content = JSON.stringify({ personalInformation: data, ...formValues });
 
-      const resume = await createResume({
-        name: title,
-        content,
-        formData,
-      });
+    // const imageUrl = await convertToImage();
+    // const formData = new FormData();
+    // formData.set('image', imageUrl!);
 
-      toast.success('Your Resume has been saved');
+    const { data: resume, serverError } = await createResumeAction({
+      name: title,
+      content,
+      picture,
+    });
 
-      localStorage.removeItem(FORM_DATA_KEY);
-
-      router.replace(`/resumes/${resume.id}/settings`);
-    } catch (e) {
-      let err = 'Something Went Wrong!';
-
-      if (e instanceof Error) err = e.message;
-
-      toast.error(err);
+    if (serverError) {
+      toast.error(serverError);
+      return;
     }
+
+    if (!resume) {
+      toast.error('Something went wrong!');
+      return;
+    }
+
+    toast.success('Your Resume has been saved');
+    localStorage.removeItem(FORM_DATA_KEY);
+    router.replace(`/resumes/${resume.id}/builder`);
   };
 
   const handleSubmit = async () => {

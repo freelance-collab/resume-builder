@@ -7,10 +7,10 @@ export const PortfolioTemplate = ({ data }: { data: ResumeSchemaType }) => {
   return (
     <div className='container my-10 flex flex-wrap gap-10' id='resume'>
       <div className='h-fit flex-1 basis-[300px]'>
-        {data.personalInformation.image && (
+        {data.personalInformation.picture && (
           <div className='h-[200px] w-[200px] rounded-full'>
             <Image
-              src={data.personalInformation.image?.preview}
+              src={data.personalInformation.picture}
               width={300}
               height={300}
               alt='avatar'

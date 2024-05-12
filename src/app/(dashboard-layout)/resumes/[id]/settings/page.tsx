@@ -1,4 +1,6 @@
-import { getResumeById } from '@/actions/resumes';
+import { notFound } from 'next/navigation';
+
+import { getResumeByIdAction } from '@/actions/resumes-actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -11,10 +13,18 @@ const ResumeSettingsPage = async ({
 }) => {
   const { id } = params;
 
-  const resume = await getResumeById(id);
+  const { data: resume, serverError } = await getResumeByIdAction({ id });
+
+  if (serverError) {
+    throw serverError;
+  }
+
+  if (resume === null) {
+    return notFound();
+  }
 
   if (!resume) {
-    throw new Error('Resume Not Found');
+    throw new Error('Something went wrong');
   }
 
   return (

@@ -2,9 +2,8 @@ import { Loader, SaveIcon } from 'lucide-react';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { updateResume } from '@/actions/resumes';
+import { updateResumeAction } from '@/actions/resumes-actions';
 import { Button } from '@/components/ui/button';
-import { convertToImage } from '@/lib/utils';
 import { useResumeForm } from '@/providers/resume-form-provider';
 
 export const SaveChangesButton = () => {
@@ -14,25 +13,30 @@ export const SaveChangesButton = () => {
   if (!resume) return null;
 
   const handleUpdateResumeWithContent = async () => {
-    try {
-      const content = JSON.stringify(form.getValues());
+    const { personalInformation, ...formValues } = form.getValues();
+    const { picture, ...data } = personalInformation;
 
-      const imageUrl = await convertToImage();
-      const formData = new FormData();
-      formData.set('imageUrl', imageUrl!);
+    const content = JSON.stringify({ personalInformation: data, ...formValues });
 
-      await updateResume({ id: resume.id, content, formData });
+    // const imageUrl = await convertToImage();
+    // const formData = new FormData();
+    // formData.set('imageUrl', imageUrl!);
 
-      toast.success('Your Resume has been saved');
+    const { data: updatedResume, serverError } = await updateResumeAction({ id: resume.id, content });
 
-      form.reset(form.getValues());
-    } catch (e) {
-      let err = 'Something Went Wrong!';
-
-      if (e instanceof Error) err = e.message;
-
-      toast.error(err);
+    if (serverError) {
+      toast.error(serverError);
+      return;
     }
+
+    if (!resume) {
+      toast.error('Something went wrong!');
+      return;
+    }
+
+    toast.success('Your Resume has been saved');
+
+    form.reset(form.getValues());
   };
 
   const handleSubmit = async () => {

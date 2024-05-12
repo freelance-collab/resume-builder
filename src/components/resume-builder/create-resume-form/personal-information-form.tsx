@@ -18,19 +18,18 @@ import { AddFieldButton, RemoveFieldButton } from './form-buttons';
 import { StateDropdown } from './state-input';
 
 export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSchemaType> }) => {
-  console.log();
   return (
     <>
       <FormField
         control={form.control}
-        name='personalInformation.image'
+        name='personalInformation.picture'
         render={({ field: { onChange, value, ...rest } }) => (
           <>
             <FormItem>
               <FormControl>
                 <div className='relative h-16 w-16 rounded-full'>
                   <Avatar className='h-full w-full'>
-                    {value && <AvatarImage src={value} className='object-cover' />}
+                    <AvatarImage src={value} className='object-cover' />
                     <AvatarFallback />
                   </Avatar>
                   <Input
@@ -43,6 +42,7 @@ export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSc
 
                       onChange(fileInBase64);
                     }}
+                    onClick={(e) => ((e.target as HTMLInputElement).value = '')}
                   />
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -69,7 +69,7 @@ export const PersonalInformationForm = ({ form }: { form: UseFormReturn<ResumeSc
                           size='icon'
                           className='group absolute bottom-0 right-0 size-7 translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full border-none
                     drop-shadow-lg hover:bg-background'
-                          onClick={() => onChange(undefined)}
+                          onClick={() => onChange('')}
                           type='button'
                         >
                           <XIcon className='size-3 text-gray-400 duration-100 group-hover:text-primary' />

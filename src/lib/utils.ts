@@ -23,15 +23,23 @@ export async function convertToImage() {
   // return dataBlob;
 }
 
-export const parseResume = (resume: ResumeSchemaType): ResumeSchemaType => {
-  return {
-    ...resume,
-    experiences: resume.experiences.map((experience) => ({
+export const parseResume = (resume: string, picture?: string | null): ResumeSchemaType => {
+  const parsedResume = JSON.parse(resume) as ResumeSchemaType;
+
+  const parsedResumeWithDate = {
+    ...parsedResume,
+    experiences: parsedResume.experiences.map((experience) => ({
       ...experience,
       startDate: new Date(experience.startDate),
       endDate: experience.endDate ? new Date(experience.endDate) : undefined,
     })),
   };
+
+  if (picture) {
+    parsedResumeWithDate.personalInformation.picture = picture;
+  }
+
+  return parsedResumeWithDate;
 };
 
 const MAX_FILE_SIZE = 3000000; // 3MB
@@ -62,3 +70,9 @@ export const imageUpload = async (file: File) => {
     fileInBase64: dataImage,
   };
 };
+
+export async function getPhoto(base64Image: string, fileName: string) {
+  const res: Response = await fetch(base64Image);
+  const blob: Blob = await res.blob();
+  return new File([blob], fileName, { type: 'image/png' });
+}

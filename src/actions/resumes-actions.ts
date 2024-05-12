@@ -1,9 +1,12 @@
 'use server';
 
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
 
 import prisma from '@/lib/prisma';
+import { action, ActionError, authAction } from '@/lib/safe-action';
 import { utapi } from '@/lib/uploadthing';
+import { getPhoto } from '@/lib/utils';
 
 import { asyncAuthHandler } from './utils';
 
@@ -16,7 +19,10 @@ export const getUserResumesAction = asyncAuthHandler((userId, args: Omit<Prisma.
   });
 });
 
-export const getResumeByIdAction = asyncAuthHandler((userId, id: string) => {
+const getPublishResumeByIdSchema = z.object({
+  id: z.string().cuid(),
+});
+export const getResumeByIdAction = authAction(getPublishResumeByIdSchema, ({ id }, { userId }) => {
   return prisma.resume.findUnique({
     where: {
       id,
@@ -24,48 +30,75 @@ export const getResumeByIdAction = asyncAuthHandler((userId, id: string) => {
     },
   });
 });
+export const getPublishResumeByIdAction = action(getPublishResumeByIdSchema, async ({ id }) => {
+  return prisma.resume.findUnique({
+    where: {
+      id,
+      published: true,
+    },
+  });
+});
 
-export const createResumeAction = asyncAuthHandler(
-  async (userId, { formData, ...data }: Omit<Prisma.ResumeCreateInput, 'user'> & { formData: FormData }) => {
-    const isExisting = await prisma.resume.findUnique({
-      where: {
-        name_userId: {
-          name: data.name,
-          userId,
-        },
-      },
-    });
-
-    if (isExisting) {
-      throw new Error('A resume with this name already exists');
-    }
-
-    const resume = await prisma.resume.create({
-      data: {
-        ...data,
+const createResumeSchema = z.object({
+  picture: z.string().optional(),
+  name: z.string().trim().min(2, {
+    message: 'Name must be at least 2 characters',
+  }),
+  description: z.string().trim().optional(),
+  content: z.string().trim(),
+});
+export const createResumeAction = authAction(createResumeSchema, async ({ picture, ...data }, { userId }) => {
+  const isExisting = await prisma.resume.findUnique({
+    where: {
+      name_userId: {
+        name: data.name,
         userId,
       },
-    });
+    },
+  });
 
-    const img = formData.get('image') as File;
-    const imgFile = new File([img], `${resume.id}.jpeg`, { type: 'image/jpeg' });
+  if (isExisting) {
+    throw new ActionError('A resume with this name already exists');
+  }
 
-    const res = await utapi.uploadFiles(imgFile);
+  let pictureUrl: string | null = null;
 
-    const updatedResume = await prisma.resume.update({
-      where: {
-        id: resume.id,
-      },
-      data: {
-        previewURL: res.data?.url,
-      },
-    });
+  if (picture) {
+    const pictureFile = await getPhoto(picture, 'picture');
+    const res = await utapi.uploadFiles(pictureFile);
+    pictureUrl = res.data?.url ?? null;
+  }
 
-    return updatedResume;
-  },
-);
+  const resume = await prisma.resume.create({
+    data: {
+      ...data,
+      picture: pictureUrl,
+      userId,
+    },
+  });
+  return resume;
 
-export const publishResumeAction = asyncAuthHandler(async (userId, id: string) => {
+  // const img = formData.get('image') as File;
+  // const imgFile = new File([img], `${resume.id}.jpeg`, { type: 'image/jpeg' });
+
+  // const res = await utapi.uploadFiles(imgFile);
+
+  // const updatedResume = await prisma.resume.update({
+  //   where: {
+  //     id: resume.id,
+  //   },
+  //   data: {
+  //     previewURL: res.data?.url,
+  //   },
+  // });
+
+  // return updatedResume;
+});
+
+const publishResumeSchema = z.object({
+  id: z.string().cuid(),
+});
+export const publishResumeAction = authAction(publishResumeSchema, async ({ id }, { userId }) => {
   await prisma.resume.update({
     where: {
       id,
@@ -77,32 +110,61 @@ export const publishResumeAction = asyncAuthHandler(async (userId, id: string) =
   });
 });
 
-export const updateResumeAction = asyncAuthHandler(
-  async (userId, data: { id: string; content?: string; name?: string; formData: FormData }) => {
-    const newData: Prisma.ResumeUpdateInput = {};
+const updateResumeSchema = z.object({
+  id: z.string().cuid(),
+  picture: z.string().optional(),
+  name: z
+    .string()
+    .trim()
+    .min(2, {
+      message: 'Name must be at least 2 characters',
+    })
+    .optional(),
+  description: z.string().trim().optional(),
+  content: z.string().trim().optional(),
+});
+export const updateResumeAction = authAction(updateResumeSchema, async ({ id, picture, ...data }, { userId }) => {
+  const isExisting = await prisma.resume.findUnique({
+    where: {
+      id,
+      userId,
+    },
+  });
 
-    if (data.content) {
-      newData.content = data.content;
+  if (!isExisting) {
+    throw new ActionError('Resume not found');
+  }
+
+  const newData: Prisma.ResumeUpdateInput = {};
+
+  Object.keys(data).forEach((key) => {
+    const k = key as keyof typeof data;
+    if (data[k] !== undefined) {
+      newData[k] = data[k];
     }
+  });
 
-    if (data.name) {
-      newData.name = data.name;
-    }
+  // const img = data.formData.get('image') as File;
+  // const imgFile = new File([img], `${data.id}.jpeg`, { type: 'image/jpeg' });
 
-    const img = data.formData.get('image') as File;
-    const imgFile = new File([img], `${data.id}.jpeg`, { type: 'image/jpeg' });
+  // const res = await Promise.all([utapi.deleteFiles(`${data.id}.jpeg`), utapi.uploadFiles(imgFile)]);
 
-    const res = await Promise.all([utapi.deleteFiles(`${data.id}.jpeg`), utapi.uploadFiles(imgFile)]);
+  let pictureUrl: string | null = null;
 
-    await prisma.resume.update({
-      where: {
-        id: data.id,
-        userId,
-      },
-      data: {
-        ...newData,
-        previewURL: res[1].data?.url,
-      },
-    });
-  },
-);
+  if (picture) {
+    const pictureFile = await getPhoto(picture, 'picture');
+    const res = await utapi.uploadFiles(pictureFile);
+    pictureUrl = res.data?.url ?? null;
+  }
+
+  await prisma.resume.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      ...newData,
+      picture: pictureUrl,
+    },
+  });
+});

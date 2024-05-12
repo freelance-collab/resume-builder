@@ -23,22 +23,16 @@ const getSavedData = () => {
   if (typeof window !== 'undefined') {
     let data = localStorage.getItem(FORM_DATA_KEY);
     if (data) {
-      // Parse it to a javaScript object
-      try {
-        data = JSON.parse(data);
-      } catch (err) {
-        console.log(err);
-      }
       return data;
     }
   }
-  return initialResumeData;
+  return JSON.stringify(initialResumeData);
 };
 
 export const ResumeFormProvider = ({ resume, children }: { resume?: Resume; children: React.ReactNode }) => {
   const form = useForm<ResumeSchemaType>({
     resolver: zodResolver(resumeSchema),
-    defaultValues: parseResume(resume ? JSON.parse(resume.content) : getSavedData()),
+    defaultValues: parseResume(resume ? resume.content : getSavedData(), resume?.picture),
     mode: 'onChange',
   });
 

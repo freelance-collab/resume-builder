@@ -1,18 +1,22 @@
 import { notFound } from 'next/navigation';
 
-import { getResumeById } from '@/actions/resumes';
+import { getPublishResumeByIdAction } from '@/actions/resumes-actions';
 import { parseResume } from '@/lib/utils';
 
 import { PortfolioTemplate } from './portfolio-template';
 
 const Page = async ({ params }: { params: { subdomain: string } }) => {
-  const resume = await getResumeById(params.subdomain);
+  const { data: resume, serverError } = await getPublishResumeByIdAction({ id: params.subdomain });
+
+  if (serverError) {
+    throw serverError;
+  }
 
   if (!resume) {
     return notFound();
   }
 
-  return <PortfolioTemplate data={parseResume(JSON.parse(resume.content))} />;
+  return <PortfolioTemplate data={parseResume(resume.content, resume.picture)} />;
 };
 
 export default Page;

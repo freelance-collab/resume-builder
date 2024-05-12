@@ -1,9 +1,9 @@
 import { Loader, Wand2Icon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { publishResume } from '@/actions/resumes';
+import { publishResumeAction } from '@/actions/resumes-actions';
 import { useResumeForm } from '@/providers/resume-form-provider';
 
 import { Button } from '../../ui/button';
@@ -26,16 +26,19 @@ export const PublishButton = ({
   }
 
   const handlePublish = async (resumeId: string) => {
-    try {
-      await publishResume(resumeId);
-      setIsPublished();
-    } catch (e) {
-      let err = 'Something Went Wrong!';
+    const { serverError, validationErrors } = await publishResumeAction({ id: resumeId });
 
-      if (e instanceof Error) err = e.message;
-
-      toast.error(err);
+    if (serverError) {
+      toast.error(serverError);
+      return;
     }
+
+    if (validationErrors) {
+      toast.error(validationErrors.id?.[0]);
+      return;
+    }
+
+    setIsPublished();
   };
 
   const handleSubmit = async () => {
