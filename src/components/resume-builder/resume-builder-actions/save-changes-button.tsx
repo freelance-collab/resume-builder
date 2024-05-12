@@ -22,7 +22,7 @@ export const SaveChangesButton = () => {
     // const formData = new FormData();
     // formData.set('imageUrl', imageUrl!);
 
-    const { data: updatedResume, serverError } = await updateResumeAction({ id: resume.id, content });
+    const { serverError } = await updateResumeAction({ id: resume.id, content, picture });
 
     if (serverError) {
       toast.error(serverError);

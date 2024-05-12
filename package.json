@@ -48,6 +48,7 @@
     "react-pdf-tailwind": "^2.3.0",
     "react-phone-number-input": "^3.3.12",
     "react-resizable-panels": "^2.0.18",
+    "react-to-print": "^2.15.1",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",

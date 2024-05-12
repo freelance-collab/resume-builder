@@ -54,7 +54,7 @@ export function ResumeBuilder() {
         {preview && (
           <>
             <ResizableHandle withHandle className='mx-10' />
-            <ResizablePanel className='flex justify-center'>
+            <ResizablePanel className='flex flex-col justify-center'>
               {/* <ResumePreview data={form.getValues()} /> */}
               <PortfolioTemplate data={form.getValues()} />
             </ResizablePanel>
